@@ -1,0 +1,59 @@
+{% extends 'resume_generator/base.html' %}
+{% block title %}Coding Skills{% endblock %}
+{% block content %}
+
+<style>
+  h1 {
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 40px;
+  }
+
+  .container {
+    background-color: #fff;
+    color: #212529;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .btn-primary {
+    background-color: rgb(32, 78, 207);
+    color: #fff;
+    border-color: #fff;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <h1>Coding Skills</h1>
+    <button type="button" class="btn btn-success mb-3" onclick="location.href='/coding_skills/create_coding_skill/'">Add
+      Coding
+      Skill</button>
+    <ul class="list-group" style="height: 60vh; overflow-y: auto;">
+
+      {% if coding_skills|length == 0 %}
+        <h2>No Coding Skills</h2>
+      {% endif %}
+
+      {% for coding_skill in coding_skills %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{coding_skill.name}}
+        <div>
+          <form action="{% url 'edit_coding_skill' coding_skill.id %}" method="GET" class="d-inline">
+            <button type="submit" class="btn btn-primary me-2">Edit</button>
+          </form>
+          <form action="{% url 'delete_coding_skill' coding_skill.id %}" method="POST" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+          </form>
+        </div>
+      </li>
+      {% endfor %}
+
+    </ul>
+  </div>
+</body>
+
+</html>
+
+{% endblock %}
